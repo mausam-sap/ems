@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}AI Dashboard{% endblock %}
+{% block breadcrumb %}AI Analytics{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="fw-bold">AI Analytics Dashboard</h4>
+  <a href="{% url 'ai:run' %}" class="btn btn-success btn-sm"><i class="bi bi-play-circle"></i> Run Predictions for All</a>
+</div>
+<div class="card">
+  <table class="table table-hover mb-0">
+    <thead class="table-dark"><tr><th>Employee</th><th>Department</th><th>Performance Score</th><th>Risk</th><th>Absenteeism Risk</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for emp in employees %}
+      {% with perf=emp.performance_predictions.first absent=emp.absenteeism_predictions.first %}
+      <tr>
+        <td>{{ emp.full_name }}</td>
+        <td>{{ emp.department|default:"—" }}</td>
+        <td>{% if perf %}<div class="d-flex align-items-center gap-2"><div class="progress flex-grow-1" style="height:8px"><div class="progress-bar {% if perf.predicted_score >= 70 %}bg-success{% elif perf.predicted_score >= 40 %}bg-warning{% else %}bg-danger{% endif %}" style="width:{{ perf.predicted_score }}%"></div></div>{{ perf.predicted_score }}</div>{% else %}<span class="text-muted">—</span>{% endif %}</td>
+        <td>{% if perf %}<span class="badge badge-{{ perf.risk_label }}">{{ perf.risk_label }}</span>{% else %}—{% endif %}</td>
+        <td>{% if absent %}<span class="badge badge-{{ absent.risk_label }}">{{ absent.risk_label }} ({{ absent.risk_probability }}%)</span>{% else %}—{% endif %}</td>
+        <td><a href="{% url 'ai:employee' emp.pk %}" class="btn btn-sm btn-outline-primary py-0 px-2">Details</a></td>
+      </tr>
+      {% endwith %}
+      {% empty %}
+      <tr><td colspan="6" class="text-muted text-center">No employees found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

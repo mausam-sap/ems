@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Review Leave{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-md-6">
+  <div class="card p-4">
+    <h5>Review Leave Request</h5>
+    <table class="table table-sm mb-3">
+      <tr><th>Employee</th><td>{{ lr.employee.full_name }}</td></tr>
+      <tr><th>Type</th><td>{{ lr.leave_type }}</td></tr>
+      <tr><th>Dates</th><td>{{ lr.start_date }} – {{ lr.end_date }} ({{ lr.days_count }} days)</td></tr>
+      <tr><th>Reason</th><td>{{ lr.reason }}</td></tr>
+      <tr><th>Applied On</th><td>{{ lr.applied_on|date:"d M Y, H:i" }}</td></tr>
+    </table>
+    <form method="post">{% csrf_token %}
+      <div class="mb-3"><label class="form-label">Decision</label>{{ form.status }}</div>
+      <div class="mb-3"><label class="form-label">Note (optional)</label>{{ form.review_note }}</div>
+      <button class="btn btn-primary">Submit</button>
+      <a href="{% url 'leave:list' %}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+  </div>
+</div></div>
+{% endblock %}

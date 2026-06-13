@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block full_content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">
+  <div class="card p-4" style="width:380px;">
+    <div class="text-center mb-4">
+      <i class="bi bi-people-fill display-4 text-primary"></i>
+      <h4 class="mt-2 mb-0 fw-bold">Employee Management System</h4>
+      <small class="text-muted">Sign in to your account</small>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        {{ form.username }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        {{ form.password }}
+      </div>
+      {% if messages %}{% for msg in messages %}<div class="alert alert-danger py-2">{{ msg }}</div>{% endfor %}{% endif %}
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

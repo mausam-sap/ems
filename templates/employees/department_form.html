@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Department{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card p-4">
+      <h5>{% if dept %}Edit{% else %}Add{% endif %} Department</h5>
+      <form method="post">{% csrf_token %}
+        <div class="mb-3"><label class="form-label">Name</label>{{ form.name }}</div>
+        <div class="mb-3"><label class="form-label">Description</label>{{ form.description }}</div>
+        <button class="btn btn-primary">Save</button>
+        <a href="{% url 'employees:departments' %}" class="btn btn-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

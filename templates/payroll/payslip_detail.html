@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Payslip{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-md-7">
+  <div class="card p-4">
+    <div class="d-flex justify-content-between mb-3">
+      <div><h5>Pay Slip</h5><p class="text-muted small mb-0">{{ pr.month }}/{{ pr.year }}</p></div>
+      <a href="{% url 'payroll:pdf' pr.pk %}" class="btn btn-primary btn-sm"><i class="bi bi-download"></i> Download PDF</a>
+    </div>
+    <table class="table table-sm mb-3">
+      <tr><th>Employee</th><td>{{ pr.employee.full_name }}</td><th>ID</th><td>{{ pr.employee.employee_id }}</td></tr>
+      <tr><th>Department</th><td>{{ pr.employee.department|default:"—" }}</td><th>Designation</th><td>{{ pr.employee.designation }}</td></tr>
+    </table>
+    <table class="table table-bordered text-center">
+      <thead class="table-dark"><tr><th>Basic Salary</th><th>Bonus</th><th>Deductions</th><th>Net Salary</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>₹{{ pr.basic_salary|floatformat:2 }}</td>
+          <td>₹{{ pr.bonus|floatformat:2 }}</td>
+          <td class="text-danger">₹{{ pr.deductions|floatformat:2 }}</td>
+          <td class="fw-bold text-success">₹{{ pr.net_salary|floatformat:2 }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-muted small">Present: {{ pr.present_days }} / {{ pr.working_days }} working days</div>
+  </div>
+</div></div>
+{% endblock %}

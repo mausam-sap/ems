@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load ems_filters %}
+{% block title %}My Attendance{% endblock %}
+{% block breadcrumb %}My Attendance{% endblock %}
+{% block content %}
+<h4 class="fw-bold mb-3">My Attendance — {{ month_name }} {{ year }}</h4>
+<div class="card p-3 mb-3">
+  <form method="get" class="d-flex gap-2 flex-wrap">
+    <select name="month" class="form-select form-select-sm" style="max-width:130px">
+      {% for num, name in months %}<option value="{{ num }}" {% if num == month %}selected{% endif %}>{{ name }}</option>{% endfor %}
+    </select>
+    <select name="year" class="form-select form-select-sm" style="max-width:100px">
+      {% for y in years %}<option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-secondary btn-sm">View</button>
+  </form>
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-md-3"><div class="card p-3 text-center"><div class="text-muted small">Present</div><h3 class="text-success">{{ summary.present }}</h3></div></div>
+  <div class="col-md-3"><div class="card p-3 text-center"><div class="text-muted small">Absent</div><h3 class="text-danger">{{ summary.absent }}</h3></div></div>
+  <div class="col-md-3"><div class="card p-3 text-center"><div class="text-muted small">Half-Day</div><h3 class="text-warning">{{ summary.half_day }}</h3></div></div>
+  <div class="col-md-3"><div class="card p-3 text-center"><div class="text-muted small">Late</div><h3 class="text-info">{{ summary.late }}</h3></div></div>
+</div>
+<div class="card p-3">
+  <table class="table table-bordered text-center mb-0">
+    <thead class="table-dark"><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
+    <tbody>
+      {% for week in cal %}
+      <tr>
+        {% for day in week %}
+        <td class="py-2">
+          {% if day %}
+            <div class="fw-bold">{{ day }}</div>
+            {% if day in att_map %}
+              <small class="badge {% if att_map|get_item:day == 'Present' %}bg-success{% elif att_map|get_item:day == 'Absent' %}bg-danger{% elif att_map|get_item:day == 'Half-Day' %}bg-warning text-dark{% else %}bg-info{% endif %}">{{ att_map|get_item:day|truncatechars:4 }}</small>
+            {% endif %}
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

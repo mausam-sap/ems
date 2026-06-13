@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard{% endblock %}
+{% block breadcrumb %}My Dashboard{% endblock %}
+{% block content %}
+<h4 class="mb-3 fw-bold">Welcome, {{ emp.full_name }}</h4>
+<p class="text-muted small">{{ emp.designation }} &bull; {{ emp.department }}</p>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card stat-card p-3" style="border-left-color:#198754">
+      <div class="text-muted small">Present This Month</div>
+      <h3>{{ att_summary.present }}</h3>
+      <small class="text-muted">{{ month_name }}</small>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card p-3" style="border-left-color:#dc3545">
+      <div class="text-muted small">Absent This Month</div>
+      <h3>{{ att_summary.absent }}</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card p-3" style="border-left-color:#ffc107">
+      <div class="text-muted small">Pending Leaves</div>
+      <h3>{{ pending_leaves }}</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card stat-card p-3" style="border-left-color:#0d6efd">
+      <div class="text-muted small">Performance Score</div>
+      <h3>{% if perf %}{{ perf.predicted_score }}{% else %}—{% endif %}</h3>
+      {% if perf %}<span class="badge badge-{{ perf.risk_label }}">{{ perf.risk_label }} Risk</span>{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card p-3">
+      <h6>Leave Balance ({{ today.year }})</h6>
+      <table class="table table-sm mb-0">
+        <thead class="table-light"><tr><th>Type</th><th>Limit</th><th>Used</th><th>Remaining</th></tr></thead>
+        <tbody>
+          {% for lt, info in balance.items %}
+          <tr>
+            <td>{{ lt }}</td><td>{{ info.limit }}</td><td>{{ info.used }}</td>
+            <td><span class="badge {% if info.remaining == 0 %}bg-danger{% elif info.remaining <= 2 %}bg-warning text-dark{% else %}bg-success{% endif %}">{{ info.remaining }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{% url 'leave:apply' %}" class="btn btn-sm btn-primary mt-2">Apply for Leave</a>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card p-3">
+      <h6>Latest Payslip</h6>
+      {% if latest_payslip %}
+        <p>Period: <strong>{{ latest_payslip.month }}/{{ latest_payslip.year }}</strong></p>
+        <p>Net Salary: <strong class="text-success">₹{{ latest_payslip.net_salary|floatformat:2 }}</strong></p>
+        <a href="{% url 'payroll:pdf' latest_payslip.pk %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> Download PDF</a>
+      {% else %}<p class="text-muted small">No payslip generated yet.</p>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

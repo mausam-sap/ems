@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{{ emp.full_name }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h5>{{ emp.full_name }}</h5>
+      <p class="text-muted">{{ emp.designation }}</p>
+      <table class="table table-sm">
+        <tr><th>Employee ID</th><td>{{ emp.employee_id }}</td></tr>
+        <tr><th>Department</th><td>{{ emp.department|default:"—" }}</td></tr>
+        <tr><th>Contact</th><td>{{ emp.contact }}</td></tr>
+        <tr><th>Email</th><td>{{ emp.user.email|default:"—" }}</td></tr>
+        <tr><th>Address</th><td>{{ emp.address|default:"—" }}</td></tr>
+        <tr><th>Joining Date</th><td>{{ emp.joining_date }}</td></tr>
+        <tr><th>Basic Salary</th><td>₹{{ emp.basic_salary|floatformat:2 }}</td></tr>
+        <tr><th>Status</th><td><span class="badge {% if emp.is_active %}bg-success{% else %}bg-secondary{% endif %}">{% if emp.is_active %}Active{% else %}Inactive{% endif %}</span></td></tr>
+      </table>
+      {% if user.is_admin %}
+      <a href="{% url 'employees:edit' emp.pk %}" class="btn btn-primary btn-sm">Edit</a>
+      <a href="{% url 'attendance:employee_report' emp.pk %}" class="btn btn-outline-secondary btn-sm ms-2">Attendance</a>
+      <a href="{% url 'ai:employee' emp.pk %}" class="btn btn-outline-success btn-sm ms-2">AI Analysis</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

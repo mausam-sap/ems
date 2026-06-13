@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Generate Payroll{% endblock %}
+{% block content %}
+<div class="row"><div class="col-md-7">
+  <div class="card p-4">
+    <h5>Generate Payroll</h5>
+    <form method="post">{% csrf_token %}
+      <div class="row g-3 mb-3">
+        <div class="col-12"><label class="form-label">Employee</label>{{ form.employee }}</div>
+        <div class="col-md-4"><label class="form-label">Month</label>{{ form.month }}</div>
+        <div class="col-md-4"><label class="form-label">Year</label>{{ form.year }}</div>
+        <div class="col-md-4"><label class="form-label">Bonus (₹)</label>{{ form.bonus }}</div>
+      </div>
+      <button class="btn btn-secondary">Preview</button>
+    </form>
+
+    {% if preview %}
+    <hr>
+    <h6>Preview — {{ preview.emp.full_name }}</h6>
+    <table class="table table-sm">
+      <tr><th>Basic Salary</th><td>₹{{ preview.basic_salary|floatformat:2 }}</td></tr>
+      <tr><th>Bonus</th><td>₹{{ preview.bonus|floatformat:2 }}</td></tr>
+      <tr><th>Deductions</th><td class="text-danger">₹{{ preview.deductions|floatformat:2 }}</td></tr>
+      <tr class="table-success"><th>Net Salary</th><td class="fw-bold">₹{{ preview.net_salary|floatformat:2 }}</td></tr>
+      <tr><th>Present Days</th><td>{{ preview.present_days }} / {{ preview.working_days }}</td></tr>
+    </table>
+    <form method="post">{% csrf_token %}
+      <input type="hidden" name="employee" value="{{ preview.emp.pk }}">
+      <input type="hidden" name="month" value="{{ preview.month }}">
+      <input type="hidden" name="year" value="{{ preview.year }}">
+      <input type="hidden" name="bonus" value="{{ preview.bonus }}">
+      <button name="confirm" class="btn btn-success">Confirm & Save</button>
+      <a href="{% url 'payroll:generate' %}" class="btn btn-secondary ms-2">Reset</a>
+    </form>
+    {% endif %}
+  </div>
+</div></div>
+{% endblock %}

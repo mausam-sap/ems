@@ -1,0 +1,12 @@
+from django.contrib import admin
+from .models import Employee, Department
+
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('employee_id', 'full_name', 'department', 'designation', 'is_active')
+    list_filter = ('department', 'is_active')
+    search_fields = ('employee_id', 'user__first_name', 'user__last_name')

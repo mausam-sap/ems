@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Delete Employee{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card p-4 border-danger">
+      <h5 class="text-danger">Delete Employee</h5>
+      <p>Are you sure you want to delete <strong>{{ emp.full_name }}</strong> ({{ emp.employee_id }})?</p>
+      <p class="text-muted small">This will also delete their login account and all associated records.</p>
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'employees:list' %}" class="btn btn-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
