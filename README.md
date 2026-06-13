@@ -9,17 +9,19 @@ An intelligent HR management web application built with Python and Django, featu
 Before you begin, make sure the following software is installed on your Windows machine:
 
 | Software | Version | Download |
-|---|---|---|
-| Python | 3.9 or higher | https://www.python.org/downloads/ |
-| Git | Latest | https://git-scm.com/download/win |
+| --- | --- | --- |
+| Python | 3.9 or higher | [python.org/downloads](https://www.python.org/downloads/) |
+| Git | Latest | [git-scm.com/download/win](https://git-scm.com/download/win) |
 | Google Chrome or Firefox | Latest | For running the web app |
 
 > **Important:** During Python installation, check **"Add Python to PATH"** before clicking Install.
 
 To verify Python is installed correctly, open Command Prompt and run:
-```
+
+```cmd
 python --version
 ```
+
 You should see something like `Python 3.9.x` or higher.
 
 ---
@@ -35,23 +37,7 @@ git clone https://github.com/mausam-sap/ems.git
 cd ems
 ```
 
-### Step 2 — Create a Virtual Environment
-
-```cmd
-python -m venv venv
-```
-
-### Step 3 — Activate the Virtual Environment
-
-```cmd
-venv\Scripts\activate
-```
-
-Your command prompt should now show `(venv)` at the beginning of the line.
-
-> To deactivate the virtual environment later, simply run: `deactivate`
-
-### Step 4 — Install Dependencies
+### Step 2 — Install Dependencies
 
 ```cmd
 pip install -r requirements.txt
@@ -59,33 +45,27 @@ pip install -r requirements.txt
 
 This will install all required packages including Django, scikit-learn, pandas, Plotly, ReportLab, and others. It may take a few minutes.
 
-### Step 5 — Set Up the Database
+### Step 3 — Set Up the Database
 
 ```cmd
 python manage.py migrate
 ```
 
-### Step 6 — Train the AI Models
+### Step 4 — Train the AI Models
 
 ```cmd
 python manage.py train_models
 ```
 
-### Step 7 — Create an Admin Account
-
-```cmd
-python manage.py createsuperuser
-```
-
-Enter a username, email (optional), and password when prompted.
-
-Alternatively, to create an admin account automatically with default credentials (`admin` / `admin@123`):
+### Step 5 — Create an Admin Account
 
 ```cmd
 python manage.py shell -c "from apps.accounts.models import User; User.objects.create_superuser('admin', 'admin@ems.com', 'admin@123', role='admin', first_name='System', last_name='Admin') if not User.objects.filter(username='admin').exists() else None"
 ```
 
-### Step 8 — (Optional) Load Dummy Data
+This creates an admin account with username `admin` and password `admin@123`.
+
+### Step 6 — (Optional) Load Sample Data
 
 To populate the system with 20 sample employees, 6 months of attendance, leave records, and payroll data:
 
@@ -93,20 +73,20 @@ To populate the system with 20 sample employees, 6 months of attendance, leave r
 python manage.py seed_data
 ```
 
-### Step 9 — Run the Development Server
+### Step 7 — Run the Application
 
 ```cmd
 python manage.py runserver
 ```
 
-Open your browser and go to: **http://127.0.0.1:8000**
+Open your browser and go to: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
 ## Login Credentials
 
 | Role | Username | Password |
-|---|---|---|
+| --- | --- | --- |
 | Admin | `admin` | `admin@123` |
 | Employee (sample) | `emp001` to `emp020` | `emp@123` |
 
@@ -116,7 +96,7 @@ Open your browser and go to: **http://127.0.0.1:8000**
 
 ## Project Structure
 
-```
+```text
 ems/
 ├── apps/
 │   ├── accounts/       # Authentication and role management
@@ -162,7 +142,7 @@ All 5 unit tests should pass.
 ## Useful Commands
 
 | Command | Description |
-|---|---|
+| --- | --- |
 | `python manage.py runserver` | Start the development server |
 | `python manage.py train_models` | Retrain AI models |
 | `python manage.py seed_data` | Load dummy data |
@@ -177,28 +157,21 @@ All 5 unit tests should pass.
 **`'python' is not recognized`**
 → Python is not added to PATH. Reinstall Python and check "Add Python to PATH" during setup.
 
-**`venv\Scripts\activate` gives an error about execution policy**
-→ Run this command in PowerShell as Administrator, then retry:
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
 **Port 8000 is already in use**
 → Run the server on a different port:
+
 ```cmd
 python manage.py runserver 8080
 ```
-Then visit http://127.0.0.1:8080
 
-**`No module named 'apps.accounts'`**
-→ Make sure you activated the virtual environment (`venv\Scripts\activate`) before running any command.
+Then visit [http://127.0.0.1:8080](http://127.0.0.1:8080)
 
 ---
 
 ## Tech Stack
 
 | Layer | Technology |
-|---|---|
+| --- | --- |
 | Language | Python 3.9+ |
 | Web Framework | Django 4.2 |
 | Database | SQLite |
